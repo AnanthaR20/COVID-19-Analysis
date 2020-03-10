@@ -1,7 +1,7 @@
 COVID-19 Infection,Recovery, and Mortality Rates
 ================
 
-Cases as of 3-09-2020
+    ## [1] "As of:  Tue Mar 10 00:28:40 2020"
 
     ## [1] "Worldwide = 113582 cases"
 
@@ -15,7 +15,7 @@ Cases as of 3-09-2020
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-5.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-6.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-7.png)<!-- -->
 \_\_\_\_ *US Rates:*
 
-    ## [1] "The average rate of by-day growth in the US since 1-22-2020 is a 0.178085239582838 percent increase in total number of confirmed number of cases each day"
+    ## [1] "The average rate of growth in the US since 1-22-2020 is a 0.178085239582838 percent increase in confirmed cases daily"
 
 *If it is increasing by 0% then this means there were no new cases in
 that day. In terms of exponential growth as this constant goes from \> 0

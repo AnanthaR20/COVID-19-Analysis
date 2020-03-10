@@ -33,7 +33,7 @@ for(d in day){
   h[[count]] <- fread(url)
   count <- count+1
 }
-day <- str_c("0",1:(todayInMarch -1)) ##This will need to change as data is available for march 8th
+day <- str_c("0",1:(todayInMarch -1)) ##This will need to change as data moves into April
 for(d in day){
   url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-",d,"-2020.csv")
   print(url)
@@ -120,8 +120,10 @@ inItaly <- inItaly %>% select(day,confirms,deaths,recovers)
 domesticItaly <- inItaly %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
 
 ```
-Cases as of 3-09-2020
+
 ```{r echo=FALSE}
+print(str_c("As of:  ", date()))
+
 print(str_c("Worldwide = ", earth[['confirms']][[nrow(earth)]]," cases"))
 print(str_c("China = ",earth[['confirms']][[nrow(earth)]] - notChina[['confirms']][[nrow(earth)]]," cases"))
 print(str_c("Italy = ", inItaly[['confirms']][[nrow(earth)]]," cases"))
@@ -184,7 +186,7 @@ for(i in 1:(nrow(inUS)-1)){
   USrates[i] <- (inUS$confirms[i+1]/inUS$confirms[i])
 }
 
-print(str_c("The average rate of by-day growth in the US since 1-22-2020 is a ",(mean(USrates) - 1)," percent increase in total number of confirmed number of cases each day"))
+print(str_c("The average rate of growth in the US since 1-22-2020 is a ",(mean(USrates) - 1)," percent increase in confirmed cases daily"))
 ```
 
   *If it is increasing by 0% then this means there were no new cases in that day. In terms of exponential growth as this constant goes from  > 0  to  < 0 this could mean that the rate of increase in cases is decreasing and there is no longer exponential growth. Examining this rate in recent chunks allows us to gauge what the current situation is in terms of how it is growing. Any positive number means continued exponential growth. But if it is 0 or less it could mean that transmission will start to taper out.*
