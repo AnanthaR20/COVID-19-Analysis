@@ -202,9 +202,9 @@ domesticItaly %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
 # world <- ne_countries(scale = 'medium',returnclass = 'sf')
 
 
-h[[length(h)]] %>% ggplot(mapping = aes(x = Latitude, y = Longitude)) +
-  geom_point(mapping = aes(size = Confirmed)) +
-  labs(title = "Number of Cases as Point Size Spatially")
+h[[length(h)]] %>% ggplot(mapping = aes(x = Longitude, y = Latitude)) +
+  geom_point(mapping = aes(size = Confirmed),alpha = 1.5,color = "red") +
+  labs(title = "Spatial Map of Number of Cases Depicted as Point Size")
 
 
 
