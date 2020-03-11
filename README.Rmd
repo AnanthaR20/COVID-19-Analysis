@@ -132,6 +132,12 @@ print(str_c("US = ", inUS[['confirms']][[nrow(earth)]]," cases-------One Week Ag
 
 *Plots:*
 ```{r echo=FALSE}
+
+
+h[[length(h)]] %>% ggplot(mapping = aes(x = Longitude, y = Latitude)) +
+  geom_point(mapping = aes(size = Confirmed),alpha = 1.5,color = "red") +
+  labs(title = "Spatial Map of Number of Cases Depicted as Point Size")
+
 #Worldwide
 worldwide %>% ggplot(mapping = aes(x = day,y = value)) + 
   geom_line(mapping = aes(color = `Rate Type`),size = 1) + 
