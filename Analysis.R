@@ -195,6 +195,28 @@ domesticItaly %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
        y = " Log Number of people in Italy",
        title = "Increase in Infection, Recovery, and Mortatilty Rate in Italy")
 
+# library(rnaturalearth)
+# library(rnaturalearthdata)
+# library(sf)
+# 
+# world <- ne_countries(scale = 'medium',returnclass = 'sf')
+
+
+h[[length(h)]] %>% ggplot(mapping = aes(x = Latitude, y = Longitude)) +
+  geom_point(mapping = aes(size = Confirmed)) +
+  labs(title = "Number of Cases as Point Size Spatially")
+
+
+
+# ggplot(data = world) +
+#   geom_sf()
+# 
+
+
+
+
+
+
 
 
 
