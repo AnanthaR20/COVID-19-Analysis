@@ -18,7 +18,6 @@ library(data.table)
 # 
 
 
-
 ####################################################################3333333333
 # downloads all data from 1-22-2020 to 3-5-2020
 h <- list()
@@ -39,7 +38,7 @@ for(d in day){
   h[[count]] <- fread(url)
   count <- count+1
 }
-day <- str_c("0",1:(todayInMarch))
+day <- c(str_c("0",1:9),10:(todayInMarch-1))
 for(d in day){
   url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-",d,"-2020.csv")
   print(url)
@@ -57,9 +56,6 @@ for(i in 1:length(h)){
     ULT <- ULT %>% rbind(h[[i]],fill = T)
   }
 }
-
-View(ULT)
-
 
 h[[length(h)]] %>% filter(`Country/Region` ==  "US") %>% ggplot(mapping = aes(x = `Country/Region`,y = Confirmed)) +
   facet_wrap(~`Province/State`) +

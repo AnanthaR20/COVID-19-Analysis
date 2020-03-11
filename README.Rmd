@@ -33,7 +33,7 @@ for(d in day){
   h[[count]] <- fread(url)
   count <- count+1
 }
-day <- str_c("0",1:(todayInMarch -1)) ##This will need to change as data moves into April
+day <- c(str_c("0",1:9),10:(todayInMarch-1))
 for(d in day){
   url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-",d,"-2020.csv")
   print(url)
@@ -124,10 +124,10 @@ domesticItaly <- inItaly %>% pivot_longer(cols = c("confirms","deaths","recovers
 ```{r echo=FALSE}
 print(str_c("As of:  ", date()))
 
-print(str_c("Worldwide = ", earth[['confirms']][[nrow(earth)]]," cases"))
-print(str_c("China = ",earth[['confirms']][[nrow(earth)]] - notChina[['confirms']][[nrow(earth)]]," cases"))
-print(str_c("Italy = ", inItaly[['confirms']][[nrow(earth)]]," cases"))
-print(str_c("US = ", inUS[['confirms']][[nrow(earth)]]," cases"))
+print(str_c("Worldwide = ", earth[['confirms']][[nrow(earth)]]," cases-------One Week Ago = ",earth[['confirms']][[nrow(earth)-7]]))
+print(str_c("China = ",earth[['confirms']][[nrow(earth)]] - notChina[['confirms']][[nrow(notChina)]]," cases-------One Week Ago = ",earth[['confirms']][[nrow(earth)-7]] - notChina[['confirms']][[nrow(notChina)-7]]))
+print(str_c("Italy = ", inItaly[['confirms']][[nrow(earth)]]," cases-------One Week Ago = ",inItaly[['confirms']][[nrow(inItaly)-7]]))
+print(str_c("US = ", inUS[['confirms']][[nrow(earth)]]," cases-------One Week Ago = ",inUS[['confirms']][[nrow(inUS)-7]]))
 ```
 
 *Plots:*
