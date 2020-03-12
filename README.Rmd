@@ -131,7 +131,7 @@ print(str_c("US = ", inUS[['confirms']][[nrow(earth)]]," cases-------One Week Ag
 ```
 
 *Plots:*
-```{r echo=FALSE}
+```{r echo=FALSE,fig.height= 8,fig.width=16}
 
 
 h[[length(h)]] %>% ggplot(mapping = aes(x = Longitude, y = Latitude)) +

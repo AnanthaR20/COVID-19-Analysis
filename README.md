@@ -1,7 +1,7 @@
 COVID-19 Infection,Recovery, and Mortality Rates
 ================
 
-    ## [1] "As of:  Wed Mar 11 12:49:56 2020"
+    ## [1] "As of:  Wed Mar 11 14:36:12 2020"
 
     ## [1] "Worldwide = 118582 cases-------One Week Ago = 92844"
 

@@ -38,7 +38,7 @@ for(d in day){
   h[[count]] <- fread(url)
   count <- count+1
 }
-day <- c(str_c("0",1:9),10:(todayInMarch-1))
+day <- c(str_c("0",1:9),10:(todayInMarch))
 for(d in day){
   url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-",d,"-2020.csv")
   print(url)
@@ -142,6 +142,24 @@ for(i in h){
 inItaly <- inItaly %>% mutate(day = 1:nrow(inItaly))
 inItaly <- inItaly %>% select(day,confirms,deaths,recovers)
 domesticItaly <- inItaly %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
+#######################################################################################
+inIran <- data.frame()
+for(i in h){
+  if(is_empty(inIran)){
+    inIran <- i %>% filter(grepl("Iran",i[['Country/Region']])) %>%  summarize(confirms = sum(Confirmed,na.rm = T),
+                                                                                 deaths = sum(Deaths,na.rm = T),
+                                                                                 recovers = sum(Recovered,na.rm = T))
+  } else{
+    inIran <- inIran %>% rbind(i %>% filter(grepl("Iran",i[['Country/Region']])) %>% 
+                                   summarize(confirms = sum(Confirmed,na.rm = T),
+                                             deaths = sum(Deaths,na.rm = T),
+                                             recovers = sum(Recovered,na.rm = T)))
+  }
+}
+
+inIran <- inIran %>% mutate(day = 1:nrow(inIran))
+inIran <- inIran %>% select(day,confirms,deaths,recovers)
+domesticIran <- inIran %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
 
 ######################################Plots###################################################
 #Worldwide
@@ -151,7 +169,7 @@ worldwide %>% ggplot(mapping = aes(x = day,y = value)) +
        y = "Number of people worldwide",
        title = "Increase in Infection, Recovery, and Mortatilty Rate")
 
-#not in China
+# not in China
 p <- nC %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
 
 p + geom_line(mapping = aes(y = value),size = 1) + 
@@ -164,7 +182,7 @@ p + geom_line(mapping = aes(y = log(value)),size = 0.8) +
        y = "Log Number of people worldwide",
        title = "Log Increase in Infection, Recovery, and Mortatilty Rate in US")
 
-#In US
+# In US
 p <- domestic %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
 
 p + geom_line(mapping = aes(y = value),size = 1) +
@@ -177,12 +195,7 @@ p + geom_line(mapping = aes(y = log(value)),size = 1) +
        y = "Log Number of people in US",
        title = "Increase in Infection, Recovery, and Mortatilty Rate in US")
 
-USrates <- c()
-for(i in 1:(nrow(inUS)-1)){
-  USrates[i] <- (inUS$confirms[i+1]/inUS$confirms[i])
-}
-
-#In Italy
+# In Italy
 domesticItaly %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
   geom_line(mapping = aes(y = value),size = 1) +
   labs(x = "Days since January 22nd 2020",
@@ -195,6 +208,19 @@ domesticItaly %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
        y = " Log Number of people in Italy",
        title = "Increase in Infection, Recovery, and Mortatilty Rate in Italy")
 
+# In Iran
+domesticIran %>% ggplot(mapping = aes(x = day, color = `Rate Type`)) +
+  geom_line(mapping = aes(y = log(value)),size= 1) +
+  labs(x = "Days since January 22nd 2020",
+       y = "Number of people in Iran",
+       title = "Increase in Infection,Recovery, and Mortality Rate")
+
+
+#Exponential Rates
+USrates <- c()
+for(i in 1:(nrow(inUS)-1)){
+  USrates[i] <- (inUS$confirms[i+1]/inUS$confirms[i])
+}
 # library(rnaturalearth)
 # library(rnaturalearthdata)
 # library(sf)
@@ -205,19 +231,5 @@ domesticItaly %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
 h[[length(h)]] %>% ggplot(mapping = aes(x = Longitude, y = Latitude)) +
   geom_point(mapping = aes(size = Confirmed),alpha = 1.5,color = "red") +
   labs(title = "Spatial Map of Number of Cases Depicted as Point Size")
-
-
-
-# ggplot(data = world) +
-#   geom_sf()
-# 
-
-
-
-
-
-
-
-
 
 
