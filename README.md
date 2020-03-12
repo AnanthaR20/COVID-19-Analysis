@@ -1,21 +1,21 @@
 COVID-19 Infection,Recovery, and Mortality Rates
 ================
 
-    ## [1] "As of:  Wed Mar 11 14:36:12 2020"
+    ## [1] "As of:  Wed Mar 11 22:40:14 2020"
 
-    ## [1] "Worldwide = 118582 cases-------One Week Ago = 92844"
+    ## [1] "Worldwide = 125865 cases-------One Week Ago = 95124"
 
-    ## [1] "China = 80757 cases-------One Week Ago = 80151"
+    ## [1] "China = 80921 cases-------One Week Ago = 80271"
 
-    ## [1] "Italy = 10149 cases-------One Week Ago = 2502"
+    ## [1] "Italy = 12462 cases-------One Week Ago = 3089"
 
-    ## [1] "US = 959 cases-------One Week Ago = 122"
+    ## [1] "US = 1281 cases-------One Week Ago = 153"
 
 *Plots:*
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-5.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-6.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-7.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-5-8.png)<!-- -->
 \_\_\_\_ *US Rates:*
 
-    ## [1] "The average rate of growth in the US since 1-22-2020 is a 0.18656521306949 percent increase in confirmed cases daily"
+    ## [1] "The average rate of growth in the US since 1-22-2020 is a 0.189610135728433 percent increase in confirmed cases daily"
 
 *If it is increasing by 0% then this means there were no new cases in
 that day. In terms of exponential growth as this constant goes from \> 0
