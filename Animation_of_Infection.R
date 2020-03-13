@@ -20,7 +20,14 @@ for (i in 1:length(h)){
 }
 
 
-# library(rnaturalearth)
+h[[length(h)]] %>% ggplot(mapping = aes(x = Longitude, y = Latitude)) +
+  geom_point(mapping = aes(size = Confirmed),alpha = 1.5,color = "red") +
+  labs(title = "Spatial Map of Number of Cases Depicted as Point Size")
+
+
+
+
+  # library(rnaturalearth)
 # library(rnaturalearthdata)
 # library(sf)
 # world <- ne_countries(scale = 'medium',returnclass = 'sf'

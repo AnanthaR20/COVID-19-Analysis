@@ -271,12 +271,16 @@ for(i in 1:(nrow(inUS)-1)){
 }
 
 #Active Cases
-h[[length(h)]] %>% group_by(`Country/Region`) %>% 
+earthRecent <- earth[nrow(earth),]
+colnames(earthRecent)[1] <- "Country/Region"
+earthRecent[1,1] <- "---Worldwide Total---"
+
+summarySoFar <- h[[length(h)]] %>% group_by(`Country/Region`) %>% 
   summarize(confirms = sum(Confirmed,na.rm = T),
             deaths = sum(Deaths,na.rm = T),
             recovers = sum(Recovered,na.rm = T)) %>% 
-  mutate(active = confirms-deaths-recovers) %>% 
-  filter(confirms > 1000) %>% View
+  rbind(earthRecent) %>%  mutate(active = confirms-deaths-recovers) %>% 
+  filter(confirms > 1000)
 
 
 
