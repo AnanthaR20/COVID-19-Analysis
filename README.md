@@ -68,6 +68,8 @@ COVID-19 Infection,Recovery, and Mortality Rates
     ## 8 US                        1663     40       12   1611
     ## 9 ---Worldwide Total---   128343   4720    68324  55299
 
+    ## [1] "There will be at least 413 new ~confirmed~ cases in the US at the end of today."
+
 *Plots:*
 ![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-5.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-6.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-7.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-8.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-9.png)<!-- -->
 \_\_\_\_ *US Rates:*

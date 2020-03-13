@@ -119,7 +119,15 @@ source("Analysis.R")
 # inItaly <- inItaly %>% mutate(day = 1:nrow(inItaly))
 # inItaly <- inItaly %>% select(day,confirms,deaths,recovers)
 # domesticItaly <- inItaly %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
+USmodel1 <- lm(log(confirms) ~ day , data = inUS)
+USmodel2 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-7):(nrow(inUS)))) )
+USmodel3 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-14):(nrow(inUS)))))
+USmodel4 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-21):(nrow(inUS)))))
 
+f1 <- function(x){return(USmodel1$coefficients[1] + USmodel1$coefficients[2]*x)}
+f2 <- function(x){return(USmodel2$coefficients[1] + USmodel2$coefficients[2]*x)}
+f3 <- function(x){return(USmodel3$coefficients[1] + USmodel3$coefficients[2]*x)}
+f4 <- function(x){return(USmodel4$coefficients[1] + USmodel4$coefficients[2]*x)}
 ```
 
 ```{r echo=FALSE}
@@ -130,6 +138,7 @@ source("Analysis.R")
 # print(str_c("Italy = ", inItaly[['confirms']][[nrow(earth)]]," cases-------One Week Ago = ",inItaly[['confirms']][[nrow(inItaly)-7]]))
 # print(str_c("US = ", inUS[['confirms']][[nrow(earth)]]," cases-------One Week Ago = ",inUS[['confirms']][[nrow(inUS)-7]]))
 summarySoFar
+print(str_c("There will be at least ",round(exp(f3(nrow(inUS)+1)) - exp(f3(nrow(inUS))))," new ~confirmed~ cases in the US at the end of today."))
 ```
 
 *Plots:*

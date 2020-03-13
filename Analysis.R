@@ -65,16 +65,18 @@ for(i in h){
   if(is_empty(earth)){
     earth <- i %>% summarize(confirms = sum(Confirmed,na.rm = T),
                          deaths = sum(Deaths,na.rm = T),
-                         recovers = sum(Recovered,na.rm = T))
+                         recovers = sum(Recovered,na.rm = T)) %>% 
+      mutate(active = confirms - deaths - recovers)
   } else{
     earth <- earth %>% rbind(i %>% summarize(confirms = sum(Confirmed,na.rm = T),
                                      deaths = sum(Deaths,na.rm = T),
-                                     recovers = sum(Recovered,na.rm = T)))
+                                     recovers = sum(Recovered,na.rm = T)) %>% 
+      mutate(active = confirms - deaths - recovers))
   }
 }
 earth <- earth %>% mutate(day = 1:nrow(earth))
-earth <- earth %>% select(day,confirms,deaths,recovers)
-worldwide <- earth %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
+earth <- earth %>% select(day,confirms,deaths,recovers,active)
+worldwide <- earth %>% pivot_longer(cols = c("confirms","deaths","recovers","active"),names_to = "Rate Type")
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 # Not China
 notChina <- data.frame()
@@ -82,18 +84,20 @@ for(i in h){
   if(is_empty(notChina)){
     notChina <- i %>% filter(!grepl("China",i[['Country/Region']])) %>%  summarize(confirms = sum(Confirmed,na.rm = T),
                                                                                    deaths = sum(Deaths,na.rm = T),
-                                                                                   recovers = sum(Recovered,na.rm = T))
+                                                                                   recovers = sum(Recovered,na.rm = T)) %>% 
+      mutate(active = confirms - deaths - recovers)
   } else{
     notChina <- notChina %>% rbind(i %>% filter(!grepl("China",i[['Country/Region']])) %>% 
                                      summarize(confirms = sum(Confirmed,na.rm = T),
                                                deaths = sum(Deaths,na.rm = T),
-                                               recovers = sum(Recovered,na.rm = T)))
+                                               recovers = sum(Recovered,na.rm = T))%>% 
+                                     mutate(active = confirms - deaths - recovers))
   }
 }
 
 notChina <- notChina %>% mutate(day = 1:nrow(notChina))
-notChina <- notChina %>% select(day,confirms,deaths,recovers)
-nC <- notChina %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
+notChina <- notChina %>% select(day,confirms,deaths,recovers,active)
+nC <- notChina %>% pivot_longer(cols = c("confirms","deaths","recovers","active"),names_to = "Rate Type")
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 # In China
 inChina <- data.frame()
@@ -101,18 +105,20 @@ for(i in h){
   if(is_empty(inChina)){
     inChina <- i %>% filter(grepl("China",i[['Country/Region']])) %>%  summarize(confirms = sum(Confirmed,na.rm = T),
                                                                                    deaths = sum(Deaths,na.rm = T),
-                                                                                   recovers = sum(Recovered,na.rm = T))
+                                                                                   recovers = sum(Recovered,na.rm = T))%>% 
+      mutate(active = confirms - deaths - recovers)
   } else{
     inChina <- inChina %>% rbind(i %>% filter(grepl("China",i[['Country/Region']])) %>% 
                                      summarize(confirms = sum(Confirmed,na.rm = T),
                                                deaths = sum(Deaths,na.rm = T),
-                                               recovers = sum(Recovered,na.rm = T)))
+                                               recovers = sum(Recovered,na.rm = T))%>% 
+                                   mutate(active = confirms - deaths - recovers))
   }
 }
 
 inChina <- inChina %>% mutate(day = 1:nrow(inChina))
-inChina <- inChina %>% select(day,confirms,deaths,recovers)
-china <- inChina %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
+inChina <- inChina %>% select(day,confirms,deaths,recovers,active)
+china <- inChina %>% pivot_longer(cols = c("confirms","deaths","recovers","active"),names_to = "Rate Type")
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 # In US
 inUS <- data.frame()
@@ -120,18 +126,20 @@ for(i in h){
   if(is_empty(inUS)){
     inUS <- i %>% filter(grepl("US",i[['Country/Region']])) %>%  summarize(confirms = sum(Confirmed,na.rm = T),
                                                                                    deaths = sum(Deaths,na.rm = T),
-                                                                                   recovers = sum(Recovered,na.rm = T))
+                                                                                   recovers = sum(Recovered,na.rm = T))%>% 
+      mutate(active = confirms - deaths - recovers)
   } else{
     inUS <- inUS %>% rbind(i %>% filter(grepl("US",i[['Country/Region']])) %>% 
                                      summarize(confirms = sum(Confirmed,na.rm = T),
                                                deaths = sum(Deaths,na.rm = T),
-                                               recovers = sum(Recovered,na.rm = T)))
+                                               recovers = sum(Recovered,na.rm = T)) %>% 
+                             mutate(active = confirms - deaths - recovers))
   }
 }
 
 inUS <- inUS %>% mutate(day = 1:nrow(inUS))
-inUS <- inUS %>% select(day,confirms,deaths,recovers)
-domestic <- inUS %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
+inUS <- inUS %>% select(day,confirms,deaths,recovers,active)
+domestic <- inUS %>% pivot_longer(cols = c("confirms","deaths","recovers","active"),names_to = "Rate Type")
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 # In Italy
 inItaly <- data.frame()
@@ -139,18 +147,20 @@ for(i in h){
   if(is_empty(inItaly)){
     inItaly <- i %>% filter(grepl("Italy",i[['Country/Region']])) %>%  summarize(confirms = sum(Confirmed,na.rm = T),
                                                                            deaths = sum(Deaths,na.rm = T),
-                                                                           recovers = sum(Recovered,na.rm = T))
+                                                                           recovers = sum(Recovered,na.rm = T)) %>% 
+      mutate(active = confirms - deaths - recovers)
   } else{
     inItaly <- inItaly %>% rbind(i %>% filter(grepl("Italy",i[['Country/Region']])) %>% 
                              summarize(confirms = sum(Confirmed,na.rm = T),
                                        deaths = sum(Deaths,na.rm = T),
-                                       recovers = sum(Recovered,na.rm = T)))
+                                       recovers = sum(Recovered,na.rm = T))%>% 
+                               mutate(active = confirms - deaths - recovers))
   }
 }
 
 inItaly <- inItaly %>% mutate(day = 1:nrow(inItaly))
-inItaly <- inItaly %>% select(day,confirms,deaths,recovers)
-domesticItaly <- inItaly %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
+inItaly <- inItaly %>% select(day,confirms,deaths,recovers,active)
+domesticItaly <- inItaly %>% pivot_longer(cols = c("confirms","deaths","recovers","active"),names_to = "Rate Type")
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 # In Iran
 inIran <- data.frame()
@@ -158,18 +168,20 @@ for(i in h){
   if(is_empty(inIran)){
     inIran <- i %>% filter(grepl("Iran",i[['Country/Region']])) %>%  summarize(confirms = sum(Confirmed,na.rm = T),
                                                                                  deaths = sum(Deaths,na.rm = T),
-                                                                                 recovers = sum(Recovered,na.rm = T))
+                                                                                 recovers = sum(Recovered,na.rm = T))%>% 
+      mutate(active = confirms - deaths - recovers) 
   } else{
     inIran <- inIran %>% rbind(i %>% filter(grepl("Iran",i[['Country/Region']])) %>% 
                                    summarize(confirms = sum(Confirmed,na.rm = T),
                                              deaths = sum(Deaths,na.rm = T),
-                                             recovers = sum(Recovered,na.rm = T)))
+                                             recovers = sum(Recovered,na.rm = T)) %>% 
+                                 mutate(active = confirms - deaths - recovers))
   }
 }
 
 inIran <- inIran %>% mutate(day = 1:nrow(inIran))
-inIran <- inIran %>% select(day,confirms,deaths,recovers)
-domesticIran <- inIran %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
+inIran <- inIran %>% select(day,confirms,deaths,recovers,active)
+domesticIran <- inIran %>% pivot_longer(cols = c("confirms","deaths","recovers","active"),names_to = "Rate Type")
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 # In Wisco
 inWI <- data.frame()
@@ -177,18 +189,20 @@ for(i in h){
   if(is_empty(inWI)){
     inWI <- i %>% filter(grepl("Wisconsin",i[['Province/State']])) %>%  summarize(confirms = sum(Confirmed,na.rm = T),
                                                                                deaths = sum(Deaths,na.rm = T),
-                                                                               recovers = sum(Recovered,na.rm = T))
+                                                                               recovers = sum(Recovered,na.rm = T))%>% 
+      mutate(active = confirms - deaths - recovers)
   } else{
     inWI <- inWI %>% rbind(i %>% filter(grepl("Wisconsin",i[['Province/State']])) %>% 
                                  summarize(confirms = sum(Confirmed,na.rm = T),
                                            deaths = sum(Deaths,na.rm = T),
-                                           recovers = sum(Recovered,na.rm = T)))
+                                           recovers = sum(Recovered,na.rm = T)) %>% 
+                             mutate(active = confirms - deaths - recovers))
   }
 }
 
 inWI <- inWI %>% mutate(day = 1:nrow(inIran))
-inWI <- inWI %>% select(day,confirms,deaths,recovers)
-wisconsin <- inWI %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
+inWI <- inWI %>% select(day,confirms,deaths,recovers,active)
+wisconsin <- inWI %>% pivot_longer(cols = c("confirms","deaths","recovers","active"),names_to = "Rate Type")
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 
 h[[length(h)]] %>% filter(`Country/Region` ==  "US") %>% ggplot(mapping = aes(x = `Country/Region`,y = Confirmed)) +
@@ -253,13 +267,13 @@ domesticItaly %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
 
 # In Iran
 domesticIran %>% ggplot(mapping = aes(x = day, color = `Rate Type`)) +
-  geom_line(mapping = aes(y = log(value)),size= 1) +
+  geom_line(mapping = aes(y = (value)),size= 1) +
   labs(x = "Days since January 22nd 2020",
        y = "Number of people",
        title = "Increase in Infection,Recovery, and Mortality Rate in Iran")
 # In Wisconsin
 wisconsin %>% ggplot(mapping = aes(x = day, color = `Rate Type`)) +
-  geom_line(mapping = aes(y = log(value)),size= 1) +
+  geom_line(mapping = aes(y = (value)),size= 1) +
   labs(x = "Days since January 22nd 2020",
        y = "Number of people",
        title = "Increase in Infection,Recovery, and Mortality Rate in Wisconsin")
@@ -278,9 +292,9 @@ earthRecent[1,1] <- "---Worldwide Total---"
 summarySoFar <- h[[length(h)]] %>% group_by(`Country/Region`) %>% 
   summarize(confirms = sum(Confirmed,na.rm = T),
             deaths = sum(Deaths,na.rm = T),
-            recovers = sum(Recovered,na.rm = T)) %>% 
-  rbind(earthRecent) %>%  mutate(active = confirms-deaths-recovers) %>% 
-  filter(confirms > 1000)
+            recovers = sum(Recovered,na.rm = T),
+            active = confirms - deaths - recovers) %>% 
+  rbind(earthRecent) %>% filter(confirms > 1000)
 
 
 
