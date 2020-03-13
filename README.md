@@ -55,15 +55,18 @@ COVID-19 Infection,Recovery, and Mortality Rates
 
 <!-- ``` -->
 
-    ## [1] "As of:  Fri Mar 13 09:57:25 2020"
-
-    ## [1] "Worldwide = 128343 cases-------One Week Ago = 97886"
-
-    ## [1] "China = 80932 cases-------One Week Ago = 80422"
-
-    ## [1] "Italy = 12462 cases-------One Week Ago = 3858"
-
-    ## [1] "US = 1663 cases-------One Week Ago = 221"
+    ## # A tibble: 9 x 5
+    ##   `Country/Region`      confirms deaths recovers active
+    ##   <chr>                    <int>  <int>    <int>  <int>
+    ## 1 China                    80932   3172    62901  14859
+    ## 2 France                    2284     48       12   2224
+    ## 3 Germany                   2078      3       25   2050
+    ## 4 Iran                     10075    429     2959   6687
+    ## 5 Italy                    12462    827     1045  10590
+    ## 6 Korea, South              7869     66      333   7470
+    ## 7 Spain                     2277     55      183   2039
+    ## 8 US                        1663     40       12   1611
+    ## 9 ---Worldwide Total---   128343   4720    68324  55299
 
 *Plots:*
 ![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-5.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-6.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-7.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-8.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-9.png)<!-- -->
