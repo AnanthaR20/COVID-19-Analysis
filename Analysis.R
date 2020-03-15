@@ -38,7 +38,7 @@ for(d in day){
   h[[count]] <- fread(url)
   count <- count+1
 }
-day <- c(str_c("0",1:9),10:(todayInMarch-1))
+day <- c(str_c("0",1:9),10:(todayInMarch))
 for(d in day){
   url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-",d,"-2020.csv")
   print(url)
@@ -203,6 +203,29 @@ for(i in h){
 inWI <- inWI %>% mutate(day = 1:nrow(inIran))
 inWI <- inWI %>% select(day,confirms,deaths,recovers,active)
 wisconsin <- inWI %>% pivot_longer(cols = c("confirms","deaths","recovers","active"),names_to = "Rate Type")
+# ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
+inSpain <- data.frame()
+for(i in h){
+  if(is_empty(inSpain)){
+    inSpain <- i %>% filter(grepl("Spain",i[['Country/Region']])) %>%  summarize(confirms = sum(Confirmed,na.rm = T),
+                                                                                  deaths = sum(Deaths,na.rm = T),
+                                                                                  recovers = sum(Recovered,na.rm = T))%>% 
+      mutate(active = confirms - deaths - recovers)
+  } else{
+    inSpain <- inSpain %>% rbind(i %>% filter(grepl("Spain",i[['Country/Region']])) %>% 
+                             summarize(confirms = sum(Confirmed,na.rm = T),
+                                       deaths = sum(Deaths,na.rm = T),
+                                       recovers = sum(Recovered,na.rm = T)) %>% 
+                             mutate(active = confirms - deaths - recovers))
+  }
+}
+
+inSpain <- inSpain %>% mutate(day = 1:nrow(inSpain))
+inSpain <- inSpain %>% select(day,confirms,deaths,recovers,active)
+Spain <- inSpain %>% pivot_longer(cols = c("confirms","deaths","recovers","active"),names_to = "Rate Type")
+#
+
+
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 
 h[[length(h)]] %>% filter(`Country/Region` ==  "US") %>% ggplot(mapping = aes(x = `Country/Region`,y = Confirmed)) +
@@ -278,12 +301,6 @@ wisconsin %>% ggplot(mapping = aes(x = day, color = `Rate Type`)) +
        y = "Number of people",
        title = "Increase in Infection,Recovery, and Mortality Rate in Wisconsin")
 
-#Exponential Rates
-USrates <- c()
-for(i in 1:(nrow(inUS)-1)){
-  USrates[i] <- (inUS$confirms[i+1]/inUS$confirms[i])
-}
-
 #Active Cases
 earthRecent <- earth[nrow(earth),]
 colnames(earthRecent)[1] <- "Country/Region"
@@ -297,6 +314,39 @@ summarySoFar <- h[[length(h)]] %>% group_by(`Country/Region`) %>%
   rbind(earthRecent) %>% filter(confirms > 1000)
 
 
+#Exponential Rates
+USrates <- c()
+for(i in 1:(nrow(inUS)-1)){
+  USrates[i] <- (inUS$confirms[i+1]/inUS$confirms[i])
+}
+
+Iranrates <- c()
+for(i in 1:(nrow(inIran)-1)){
+  Iranrates[i] <- (inIran$confirms[i+1]/inIran$confirms[i])
+}
+
+Italyrates <- c()
+for(i in 1:(nrow(inItaly)-1)){
+  Italyrates[i] <- (inItaly$confirms[i+1]/inItaly$confirms[i])
+}
+
+Chinarates <- c()
+for(i in 1:(nrow(inChina)-1)){
+  Chinarates[i] <- (inChina$confirms[i+1]/inChina$confirms[i])
+}
+
+Spainrates <- c()
+for(i in 1:(nrow(inSpain)-1)){
+  Spainrates[i] <- (inSpain$confirms[i+1]/inSpain$confirms[i])
+}
 
 
+
+ggplot(mapping = aes(x = 1:(nrow(earth)-1))) + 
+  geom_line(aes(y = Italyrates), color = 'orange') +
+  geom_line(aes(y = Chinarates), color = 'blue') +
+  geom_line(aes(y = USrates), color = "Red") +
+  geom_line(aes(y = Spainrates),color = "Black") +
+  geom_line(aes(y = Iranrates), color = "Yellow")
+  
 

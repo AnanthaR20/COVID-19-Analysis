@@ -52,7 +52,27 @@ Wpredictions[[5]] <- Wf3(support)
 Wpredictions[[6]] <- Wf4(support)
 colnames(Wpredictions) <- c("day","World_population","timeline","last1Week","last2Weeks","last3Weeks")
 Wpredictions <- Wpredictions %>% pivot_longer(cols = c("World_population","timeline","last1Week","last2Weeks","last3Weeks"),names_to = "model")
+############################################################################################
 
+W1 <- lm(log(deaths)~day,data = earth)
+W2 <- lm(log(deaths)~day,data = (earth %>% slice((nrow(earth)-7):(nrow(earth)))))
+W3 <- lm(log(deaths)~day,data = (earth %>% slice((nrow(earth)-14):(nrow(earth)))))
+W4 <- lm(log(deaths)~day,data = (earth %>% slice((nrow(earth)-21):(nrow(earth)))))
+
+Wd1 <- function(x){return(return(Wmodel1$coefficients[1] + Wmodel1$coefficients[2]*x))}
+Wd2 <- function(x){return(return(Wmodel2$coefficients[1] + Wmodel2$coefficients[2]*x))}
+Wd3 <- function(x){return(return(Wmodel3$coefficients[1] + Wmodel3$coefficients[2]*x))}
+Wd4 <- function(x){return(return(Wmodel4$coefficients[1] + Wmodel4$coefficients[2]*x))}
+
+Wdpredictions <- data.frame(matrix(nrow = length(support),ncol = 6))
+Wdpredictions[[1]] <- support
+Wdpredictions[[2]] <- logWorld
+Wdpredictions[[3]] <- Wd1(support)
+Wdpredictions[[4]] <- Wd2(support)
+Wdpredictions[[5]] <- Wd3(support)
+Wdpredictions[[6]] <- Wd4(support)
+colnames(Wdpredictions) <- c("day","World_population","timeline","last1Week","last2Weeks","last3Weeks")
+Wdpredictions <- Wdpredictions %>% pivot_longer(cols = c("World_population","timeline","last1Week","last2Weeks","last3Weeks"),names_to = "model")
 
 ####################plots of models#################################
 
@@ -71,10 +91,12 @@ Wpredictions %>% ggplot(mapping = aes(x = day,color = model)) +
        title = "3 model predictions for when #Confirmed = World population")
  
 
+Wdpredictions %>% ggplot(mapping = aes(x = day, color = model)) +
+  geom_line(aes(y = value)) + 
+  labs(x = "Days since January 22nd", y = "Log of World population",
+      title = "3 model predictions for when #Deaths = World population")
 
-
-
-
-
+exp(f2(nrow(inUS)+1)) - exp(f2(nrow(inUS)))
+exp(f3(nrow(inUS)+1)) - exp(f3(nrow(inUS)))
 
 

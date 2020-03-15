@@ -12,7 +12,6 @@ library(lubridate)
 source("Analysis.R")
 ```
 
-
 <!-- ```{r include=F} -->
 <!-- # downloads all data from 1-22-2020 to today -->
 <!-- h <- list() -->

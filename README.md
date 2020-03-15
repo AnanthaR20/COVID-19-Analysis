@@ -55,26 +55,29 @@ COVID-19 Infection,Recovery, and Mortality Rates
 
 <!-- ``` -->
 
-    ## # A tibble: 9 x 5
-    ##   `Country/Region`      confirms deaths recovers active
-    ##   <chr>                    <int>  <int>    <int>  <int>
-    ## 1 China                    80932   3172    62901  14859
-    ## 2 France                    2284     48       12   2224
-    ## 3 Germany                   2078      3       25   2050
-    ## 4 Iran                     10075    429     2959   6687
-    ## 5 Italy                    12462    827     1045  10590
-    ## 6 Korea, South              7869     66      333   7470
-    ## 7 Spain                     2277     55      183   2039
-    ## 8 US                        1663     40       12   1611
-    ## 9 ---Worldwide Total---   128343   4720    68324  55299
+    ## # A tibble: 12 x 5
+    ##    `Country/Region`      confirms deaths recovers active
+    ##    <chr>                    <int>  <int>    <int>  <int>
+    ##  1 China                    80977   3193    65660  12124
+    ##  2 France                    4480     91       12   4377
+    ##  3 Germany                   4585      9       46   4530
+    ##  4 Iran                     12729    611     2959   9159
+    ##  5 Italy                    21157   1441     1966  17750
+    ##  6 Korea, South              8086     72      510   7504
+    ##  7 Norway                    1090      3        1   1086
+    ##  8 Spain                     6391    195      517   5679
+    ##  9 Switzerland               1359     13        4   1342
+    ## 10 United Kingdom            1143     21       19   1103
+    ## 11 US                        2726     54       12   2660
+    ## 12 ---Worldwide Total---   156099   5819    72624  77656
 
-    ## [1] "There will be at least 413 new ~confirmed~ cases in the US at the end of today."
+    ## [1] "There will be at least 877 new ~confirmed~ cases in the US at the end of today."
 
 *Plots:*
 ![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-5.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-6.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-7.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-8.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-9.png)<!-- -->
 \_\_\_\_ *US Rates:*
 
-    ## [1] "The average rate of growth in the US since 1-22-2020 is a 0.191782023568118 percent increase in confirmed cases daily"
+    ## [1] "The average rate of growth in the US since 1-22-2020 is a 0.195200315075535 percent increase in confirmed cases daily"
 
 *If it is increasing by 0% then this means there were no new cases in
 that day. In terms of exponential growth as this constant goes from \> 0
