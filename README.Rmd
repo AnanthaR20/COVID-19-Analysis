@@ -203,10 +203,18 @@ domesticItaly %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
 ____
 *US Rates:*
 ```{r echo=FALSE}
+source("US.R")
+
 USrates <- c()
 for(i in 1:(nrow(inUS)-1)){
   USrates[i] <- (inUS$confirms[i+1]/inUS$confirms[i])
 }
+
+
+nifty50 %>% ggplot(mapping = aes(x = day, color = `Rate Type`)) +
+  facet_wrap(~state) +
+  geom_line(mapping = aes(y = value))
+
 
 print(str_c("The average rate of growth in the US since 1-22-2020 is a ",(mean(USrates) - 1)," percent increase in confirmed cases daily"))
 ```

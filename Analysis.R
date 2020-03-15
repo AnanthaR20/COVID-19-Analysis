@@ -38,7 +38,7 @@ for(d in day){
   h[[count]] <- fread(url)
   count <- count+1
 }
-day <- c(str_c("0",1:9),10:(todayInMarch))
+day <- c(str_c("0",1:9),10:(todayInMarch-1))
 for(d in day){
   url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-",d,"-2020.csv")
   print(url)
@@ -54,6 +54,16 @@ for(i in 1:length(h)){
     ULT <- h[[i]]
   } else{
     ULT <- ULT %>% rbind(h[[i]],fill = T)
+  }
+}
+# Add longitude and latitude to the whole data set
+
+# We'll need to augment the previous dataframes to include latitude and longitude
+lon_lat_key <- h[[length(h)]] %>% select(`Country/Region`,`Province/State`,Longitude,Latitude)
+
+for(i in 1:length(h)){
+  if(is.null(h[[i]][["Longitude"]])){
+    h[[i]] <- h[[i]] %>% left_join(lon_lat_key,by = c("Country/Region","Province/State"))
   }
 }
 
@@ -319,6 +329,17 @@ USrates <- c()
 for(i in 1:(nrow(inUS)-1)){
   USrates[i] <- (inUS$confirms[i+1]/inUS$confirms[i])
 }
+
+USratesD <- c()
+for(i in 1:(nrow(inUS)-1)){
+  USratesD[i] <- (inUS$deaths[i+1]/inUS$deaths[i])
+}
+
+USratesR <- c()
+for(i in 1:(nrow(inUS)-1)){
+  USratesR[i] <- (inUS$recovers[i+1]/inUS$recovers[i])
+}
+
 
 Iranrates <- c()
 for(i in 1:(nrow(inIran)-1)){
