@@ -6,163 +6,45 @@ fig_height: 8
 ---
 
 ```{r include=FALSE}
-library(tidyverse)
-library(data.table)
-library(lubridate)
-source("Analysis.R")
+source("setup/library.R")
+source("setup/pipe1.R")
+source("dataTables.R")
 ```
 
-<!-- ```{r include=F} -->
-<!-- # downloads all data from 1-22-2020 to today -->
-<!-- h <- list() -->
-<!-- todayInMarch <- as.numeric(substring(date(),9,10)) -->
-
-
-<!-- day <- 22:31 -->
-<!-- count <- 1 -->
-<!-- for(d in day){ -->
-<!--   url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/01-",d,"-2020.csv") -->
-<!--   print(url) -->
-<!--   h[[count]] <- fread(url) -->
-<!--   count <- count+1 -->
-<!-- } -->
-<!-- day <- c(str_c("0",1:9),10:29) -->
-<!-- for(d in day){ -->
-<!--   url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/02-",d,"-2020.csv") -->
-<!--   print(url) -->
-<!--   h[[count]] <- fread(url) -->
-<!--   count <- count+1 -->
-<!-- } -->
-<!-- day <- c(str_c("0",1:9),10:(todayInMarch-1)) -->
-<!-- for(d in day){ -->
-<!--   url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-",d,"-2020.csv") -->
-<!--   print(url) -->
-<!--   h[[count]] <- fread(url) -->
-<!--   count <- count+1 -->
-<!-- } -->
-<!-- ``` -->
-
-```{r include=F}
+```{r include=FALSE}
+# USmodel1 <- lm(log(confirms) ~ day , data = inUS)
+# USmodel2 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-7):(nrow(inUS)))) )
+# USmodel3 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-14):(nrow(inUS)))))
+# USmodel4 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-21):(nrow(inUS)))))
 # 
-# # Get a summary table of the increasing number of cases day by day #
-# earth <- data.frame()
-# for(i in h){
-#   if(is_empty(earth)){
-#     earth <- i %>% summarize(confirms = sum(Confirmed,na.rm = T),
-#                          deaths = sum(Deaths,na.rm = T),
-#                          recovers = sum(Recovered,na.rm = T))
-#   } else{
-#     earth <- earth %>% rbind(i %>% summarize(confirms = sum(Confirmed,na.rm = T),
-#                                      deaths = sum(Deaths,na.rm = T),
-#                                      recovers = sum(Recovered,na.rm = T)))
-#   }
-# }
-# earth <- earth %>% mutate(day = 1:nrow(earth))
-# earth <- earth %>% select(day,confirms,deaths,recovers)
-# worldwide <- earth %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
-# # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
-# 
-# notChina <- data.frame()
-# for(i in h){
-#   if(is_empty(notChina)){
-#     notChina <- i %>% filter(!grepl("China",i[['Country/Region']])) %>%  summarize(confirms = sum(Confirmed,na.rm = T),
-#                                                                                    deaths = sum(Deaths,na.rm = T),
-#                                                                                    recovers = sum(Recovered,na.rm = T))
-#   } else{
-#     notChina <- notChina %>% rbind(i %>% filter(!grepl("China",i[['Country/Region']])) %>% 
-#                                      summarize(confirms = sum(Confirmed,na.rm = T),
-#                                                deaths = sum(Deaths,na.rm = T),
-#                                                recovers = sum(Recovered,na.rm = T)))
-#   }
-# }
-# 
-# notChina <- notChina %>% mutate(day = 1:nrow(notChina))
-# notChina <- notChina %>% select(day,confirms,deaths,recovers)
-# nC <- notChina %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
-# 
-# # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
-# # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
-# inUS <- data.frame()
-# for(i in h){
-#   if(is_empty(inUS)){
-#     inUS <- i %>% filter(grepl("US",i[['Country/Region']])) %>%  summarize(confirms = sum(Confirmed,na.rm = T),
-#                                                                                    deaths = sum(Deaths,na.rm = T),
-#                                                                                    recovers = sum(Recovered,na.rm = T))
-#   } else{
-#     inUS <- inUS %>% rbind(i %>% filter(grepl("US",i[['Country/Region']])) %>% 
-#                                      summarize(confirms = sum(Confirmed,na.rm = T),
-#                                                deaths = sum(Deaths,na.rm = T),
-#                                                recovers = sum(Recovered,na.rm = T)))
-#   }
-# }
-# 
-# inUS <- inUS %>% mutate(day = 1:nrow(inUS))
-# inUS <- inUS %>% select(day,confirms,deaths,recovers)
-# domestic <- inUS %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
-# 
-# #########################################################################
-# inItaly <- data.frame()
-# for(i in h){
-#   if(is_empty(inItaly)){
-#     inItaly <- i %>% filter(grepl("Italy",i[['Country/Region']])) %>%  summarize(confirms = sum(Confirmed,na.rm = T),
-#                                                                            deaths = sum(Deaths,na.rm = T),
-#                                                                            recovers = sum(Recovered,na.rm = T))
-#   } else{
-#     inItaly <- inItaly %>% rbind(i %>% filter(grepl("Italy",i[['Country/Region']])) %>% 
-#                              summarize(confirms = sum(Confirmed,na.rm = T),
-#                                        deaths = sum(Deaths,na.rm = T),
-#                                        recovers = sum(Recovered,na.rm = T)))
-#   }
-# }
-# 
-# inItaly <- inItaly %>% mutate(day = 1:nrow(inItaly))
-# inItaly <- inItaly %>% select(day,confirms,deaths,recovers)
-# domesticItaly <- inItaly %>% pivot_longer(cols = c("confirms","deaths","recovers"),names_to = "Rate Type")
-USmodel1 <- lm(log(confirms) ~ day , data = inUS)
-USmodel2 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-7):(nrow(inUS)))) )
-USmodel3 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-14):(nrow(inUS)))))
-USmodel4 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-21):(nrow(inUS)))))
-
-f1 <- function(x){return(USmodel1$coefficients[1] + USmodel1$coefficients[2]*x)}
-f2 <- function(x){return(USmodel2$coefficients[1] + USmodel2$coefficients[2]*x)}
-f3 <- function(x){return(USmodel3$coefficients[1] + USmodel3$coefficients[2]*x)}
-f4 <- function(x){return(USmodel4$coefficients[1] + USmodel4$coefficients[2]*x)}
-```
-
-```{r echo=FALSE}
-# print(str_c("As of:  ", date()))
-
-# print(str_c("Worldwide = ", earth[['confirms']][[nrow(earth)]]," cases-------One Week Ago = ",earth[['confirms']][[nrow(earth)-7]]))
-# print(str_c("China = ",earth[['confirms']][[nrow(earth)]] - notChina[['confirms']][[nrow(notChina)]]," cases-------One Week Ago = ",earth[['confirms']][[nrow(earth)-7]] - notChina[['confirms']][[nrow(notChina)-7]]))
-# print(str_c("Italy = ", inItaly[['confirms']][[nrow(earth)]]," cases-------One Week Ago = ",inItaly[['confirms']][[nrow(inItaly)-7]]))
-# print(str_c("US = ", inUS[['confirms']][[nrow(earth)]]," cases-------One Week Ago = ",inUS[['confirms']][[nrow(inUS)-7]]))
-summarySoFar
-print(str_c("There will be at least ",round(exp(f3(nrow(inUS)+1)) - exp(f3(nrow(inUS))))," new ~confirmed~ cases in the US at the end of today."))
+# f1 <- function(x){return(USmodel1$coefficients[1] + USmodel1$coefficients[2]*x)}
+# f2 <- function(x){return(USmodel2$coefficients[1] + USmodel2$coefficients[2]*x)}
+# f3 <- function(x){return(USmodel3$coefficients[1] + USmodel3$coefficients[2]*x)}
+# f4 <- function(x){return(USmodel4$coefficients[1] + USmodel4$coefficients[2]*x)}
 ```
 
 *Plots:*
 ```{r echo=FALSE,fig.height= 8,fig.width=16}
 
-
-h[[length(h)]] %>% ggplot(mapping = aes(x = Longitude, y = Latitude)) +
+t(0) %>% ggplot(mapping = aes(x = Longitude, y = Latitude)) +
   geom_point(mapping = aes(size = Confirmed),alpha = 1.5,color = "red") + labs(title = "Spatial Map of Number of Cases Depicted as Point Size")
 
 #Worldwide
-worldwide %>% ggplot(mapping = aes(x = day,y = value)) + 
+earth %>% tp %>% ggplot(mapping = aes(x = day,y = value)) + 
   geom_line(mapping = aes(color = `Rate Type`),size = 1) + 
   labs(x = "Days since January 22nd 2020",
        y = "Number of people worldwide",
        title = "Increase in Infection, Recovery, and Mortatilty Rate Worldwide")
 
 # China
-china %>% ggplot(mapping = aes(x = day,y = value)) + 
+c$China %>% tp %>% ggplot(mapping = aes(x = day,y = value)) + 
   geom_line(mapping = aes(color = `Rate Type`),size = 1) + 
   labs(x = "Days since January 22nd 2020",
        y = "Number of people",
        title = "Increase in Infection, Recovery, and Mortatilty Rate in China")
 
 #not in China
-p <- nC %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
+p <- c$China %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
 
 p + geom_line(mapping = aes(y = value),size = 1) + 
   labs(x = "Days since January 22nd 2020",
@@ -175,7 +57,7 @@ p + geom_line(mapping = aes(y = log(value)),size = 0.8) +
        title = "Log Increase in Infection, Recovery, and Mortatilty Rate Outside China")
 
 #In US
-p <- domestic %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
+p <- c$US %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
 
 p + geom_line(mapping = aes(y = value),size = 1) +
   labs(x = "Days since January 22nd 2020",
@@ -188,13 +70,13 @@ p + geom_line(mapping = aes(y = log(value)),size = 1) +
        title = "Log Increase in Infection, Recovery, and Mortatilty Rate in US")
 
 #In Italy
-domesticItaly %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
+c$Italy %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
   geom_line(mapping = aes(y = value),size = 1) +
   labs(x = "Days since January 22nd 2020",
        y = "Number of people in Italy",
        title = "Increase in Infection, Recovery, and Mortatilty Rate in Italy")
 
-domesticItaly %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
+c$Italy %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
   geom_line(mapping = aes(y = log(value)),size = 1) +
   labs(x = "Days since January 22nd 2020",
        y = " Log Number of people in Italy",
@@ -203,20 +85,20 @@ domesticItaly %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
 ____
 *US Rates:*
 ```{r echo=FALSE}
-source("US.R")
-
-USrates <- c()
-for(i in 1:(nrow(inUS)-1)){
-  USrates[i] <- (inUS$confirms[i+1]/inUS$confirms[i])
-}
-
-
-nifty50 %>% ggplot(mapping = aes(x = day, color = `Rate Type`)) +
-  facet_wrap(~state) +
-  geom_line(mapping = aes(y = value))
-
-
-print(str_c("The average rate of growth in the US since 1-22-2020 is a ",(mean(USrates) - 1)," percent increase in confirmed cases daily"))
+# source("US.R")
+# 
+# USrates <- c()
+# for(i in 1:(nrow(c$US)-1)){
+#   USrates[i] <- (c$US$confirms[i+1]/c$US$confirms[i])
+# }
+# 
+# 
+# nifty50 %>% ggplot(mapping = aes(x = day, color = `Rate Type`)) +
+#   facet_wrap(~state) +
+#   geom_line(mapping = aes(y = value))
+# 
+# 
+# print(str_c("The average rate of growth in the US since 1-22-2020 is a ",(mean(USrates) - 1)," percent increase in confirmed cases daily"))
 ```
 
   *If it is increasing by 0% then this means there were no new cases in that day. In terms of exponential growth as this constant goes from  > 0  to  < 0 this could mean that the rate of increase in cases is decreasing and there is no longer exponential growth. Examining this rate in recent chunks allows us to gauge what the current situation is in terms of how it is growing. Any positive number means continued exponential growth. But if it is 0 or less it could mean that transmission will start to taper out.*

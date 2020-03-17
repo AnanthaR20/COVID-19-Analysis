@@ -6,7 +6,7 @@
 #   time 'under heat' so it is named 'h' and contains all the data
 # At the end of this script there are a couple of function associated
 #   with the way the data is structured to get useful info from it.
-source("library.R")
+source("setup/library.R")
 
 h <- list()
 todayInMarch <- as.numeric(substring(date(),9,10))
@@ -29,12 +29,17 @@ for(d in day){
   count <- count+1
 }
 # March
-day <- c(str_c("0",1:9),10:(todayInMarch))
+day <- c(str_c("0",1:9),10:(todayInMarch-1))
 for(d in day){
   url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-",d,"-2020.csv")
   print(url)
   h[[count]] <- fread(url)
   count <- count+1
+}
+
+# Handle inconsistent naming convention for South Korea
+for(i in 1:length(h)){
+ h[[i]]$`Country/Region` <- ifelse((h[[i]]$`Country/Region` == "Korea, South" | h[[i]]$`Country/Region` == "Republic of Korea"),"South Korea",h[[i]]$`Country/Region`)
 }
 
 # Add longitude and latitude to the whole data set
@@ -58,4 +63,4 @@ for(i in 1:length(h)){
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 # -- Functions for the 'heat' 'h' list -- #
 
-source("pipe1functions.R")
+source("setup/pipe1functions.R")

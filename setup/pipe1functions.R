@@ -4,7 +4,7 @@
 # ::::::::::::::::::::::::::::::::::::: #
 
 
-#--Time Slice function--#
+#--Time Slice Function--#
 # returns data from t days ago
 #
 t <- function(days = 0){
@@ -12,11 +12,23 @@ t <- function(days = 0){
 }
 
 
+#--Add Incidence Function--#
+# returns df with an incidence column
+addIncidence <- function(df){
+  for(i in 1:nrow(df)){
+    if(i == 1){df$incidence[i] <- df$confirms[i]}
+    else {
+      df$incidence[i] <- df$confirms[i]-df$confirms[i-1]
+    }
+  }
+  return(df)
+}
+
 #--'To Plottable' Formatting Function--#
 # Takes data frames made by *Tracking Function* and
 # puts them into a plottable format for ggplot
 tp <- function(df){
-  return(df %>% pivot_longer(cols = c("confirms","deaths","recovers","active"),names_to = "Rate Type"))
+  return(df %>% pivot_longer(cols = c("confirms","deaths","recovers","active","incidence"),names_to = "Rate Type"))
 }
 
 
@@ -54,7 +66,8 @@ track <- function(location = 'earth'){
     }
     
     df <- df %>% mutate(day = 1:nrow(df)) %>%
-      select(day,confirms,deaths,recovers,active)
+      select(day,confirms,deaths,recovers,active) %>% 
+      addIncidence()
     return(df)
   } 
   else {
@@ -83,7 +96,8 @@ track <- function(location = 'earth'){
   }
   
   df <- df %>% mutate(day = 1:nrow(df)) %>% 
-    select(day,confirms,deaths,recovers,active)
+    select(day,confirms,deaths,recovers,active) %>% 
+    addIncidence()
   return(df)
 }
 

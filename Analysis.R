@@ -8,42 +8,42 @@ h[[length(h)]] %>% filter(`Country/Region` ==  "US") %>% ggplot(mapping = aes(x 
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 #Exponential Rates
 USrates <- c()
-for(i in 1:(nrow(inUS)-1)){
-  USrates[i] <- (inUS$confirms[i+1]/inUS$confirms[i])
+for(i in 1:(nrow(over1000$US)-1)){
+  USrates[i] <- (over1000$US$confirms[i+1]/over1000$US$confirms[i])
 }
-
-USratesD <- c()
-for(i in 1:(nrow(inUS)-1)){
-  USratesD[i] <- (inUS$deaths[i+1]/inUS$deaths[i])
-}
-
-USratesR <- c()
-for(i in 1:(nrow(inUS)-1)){
-  USratesR[i] <- (inUS$recovers[i+1]/inUS$recovers[i])
-}
-
-
-Iranrates <- c()
-for(i in 1:(nrow(inIran)-1)){
-  Iranrates[i] <- (inIran$confirms[i+1]/inIran$confirms[i])
-}
-
-Italyrates <- c()
-for(i in 1:(nrow(inItaly)-1)){
-  Italyrates[i] <- (inItaly$confirms[i+1]/inItaly$confirms[i])
-}
-
-Chinarates <- c()
-for(i in 1:(nrow(inChina)-1)){
-  Chinarates[i] <- (inChina$confirms[i+1]/inChina$confirms[i])
-}
-
-Spainrates <- c()
-for(i in 1:(nrow(inSpain)-1)){
-  Spainrates[i] <- (inSpain$confirms[i+1]/inSpain$confirms[i])
-}
-
-
+# 
+# USratesD <- c()
+# for(i in 1:(nrow(inUS)-1)){
+#   USratesD[i] <- (inUS$deaths[i+1]/inUS$deaths[i])
+# }
+# 
+# USratesR <- c()
+# for(i in 1:(nrow(inUS)-1)){
+#   USratesR[i] <- (inUS$recovers[i+1]/inUS$recovers[i])
+# }
+# 
+# 
+# Iranrates <- c()
+# for(i in 1:(nrow(inIran)-1)){
+#   Iranrates[i] <- (inIran$confirms[i+1]/inIran$confirms[i])
+# }
+# 
+# Italyrates <- c()
+# for(i in 1:(nrow(inItaly)-1)){
+#   Italyrates[i] <- (inItaly$confirms[i+1]/inItaly$confirms[i])
+# }
+# 
+# Chinarates <- c()
+# for(i in 1:(nrow(inChina)-1)){
+#   Chinarates[i] <- (inChina$confirms[i+1]/inChina$confirms[i])
+# }
+# 
+# Spainrates <- c()
+# for(i in 1:(nrow(inSpain)-1)){
+#   Spainrates[i] <- (inSpain$confirms[i+1]/inSpain$confirms[i])
+# }
+# 
+# 
 
 ggplot(mapping = aes(x = 1:(nrow(earth)-1))) + 
   geom_line(aes(y = Italyrates), color = 'orange') +
