@@ -44,7 +44,6 @@ for(j in 1:length(terr)){
     
 }
 
-
 # So now 'inStates' is a data frame for plotting the active cases curve for
 # all states in the United States
 notinStates <- c("District of Columbia","Puerto Rico","Virgin Islands, U.S.","Diamond Princess","Grand Princess")
@@ -53,6 +52,7 @@ nifty50 <- inStates %>% filter(!state %in% notinStates)
 nifty50 %>% ggplot(mapping = aes(x = day, color = `Rate Type`)) +
   facet_wrap(~state) +
   geom_line(mapping = aes(y = value))
+
 
 
 
