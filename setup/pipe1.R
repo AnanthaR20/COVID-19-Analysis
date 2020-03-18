@@ -29,7 +29,7 @@ for(d in day){
   count <- count+1
 }
 # March
-day <- c(str_c("0",1:9),10:(todayInMarch-1))
+day <- c(str_c("0",1:9),10:(todayInMarch))
 for(d in day){
   url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-",d,"-2020.csv")
   print(url)

@@ -1,4 +1,5 @@
-source("Analysis.R")
+source("setup/library.R")
+source("setup/pipe1.R")
 
 #Making Models
 support <- 0:365
@@ -9,10 +10,10 @@ world <- 7770219335
 #Model Predictions for US:
 logUSpop <- rep(log(us),length(support))
 
-USmodel1 <- lm(log(confirms) ~ day , data = inUS)
-USmodel2 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-7):(nrow(inUS)))) )
-USmodel3 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-14):(nrow(inUS)))))
-USmodel4 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-21):(nrow(inUS)))))
+USmodel1 <- lm(log(confirms) ~ day , data = c$US)
+USmodel2 <- lm(log(confirms) ~ day, data = (c$US %>% slice((nrow(c$US)-7):(nrow(c$US)))) )
+USmodel3 <- lm(log(confirms) ~ day, data = (c$US %>% slice((nrow(c$US)-14):(nrow(c$US)))))
+USmodel4 <- lm(log(confirms) ~ day, data = (c$US %>% slice((nrow(c$US)-21):(nrow(c$US)))))
 
 f1 <- function(x){return(USmodel1$coefficients[1] + USmodel1$coefficients[2]*x)}
 f2 <- function(x){return(USmodel2$coefficients[1] + USmodel2$coefficients[2]*x)}
@@ -53,27 +54,6 @@ Wpredictions[[6]] <- Wf4(support)
 colnames(Wpredictions) <- c("day","World_population","timeline","last1Week","last2Weeks","last3Weeks")
 Wpredictions <- Wpredictions %>% pivot_longer(cols = c("World_population","timeline","last1Week","last2Weeks","last3Weeks"),names_to = "model")
 ############################################################################################
-
-W1 <- lm(log(deaths)~day,data = earth)
-W2 <- lm(log(deaths)~day,data = (earth %>% slice((nrow(earth)-7):(nrow(earth)))))
-W3 <- lm(log(deaths)~day,data = (earth %>% slice((nrow(earth)-14):(nrow(earth)))))
-W4 <- lm(log(deaths)~day,data = (earth %>% slice((nrow(earth)-21):(nrow(earth)))))
-
-Wd1 <- function(x){return(return(Wmodel1$coefficients[1] + Wmodel1$coefficients[2]*x))}
-Wd2 <- function(x){return(return(Wmodel2$coefficients[1] + Wmodel2$coefficients[2]*x))}
-Wd3 <- function(x){return(return(Wmodel3$coefficients[1] + Wmodel3$coefficients[2]*x))}
-Wd4 <- function(x){return(return(Wmodel4$coefficients[1] + Wmodel4$coefficients[2]*x))}
-
-Wdpredictions <- data.frame(matrix(nrow = length(support),ncol = 6))
-Wdpredictions[[1]] <- support
-Wdpredictions[[2]] <- logWorld
-Wdpredictions[[3]] <- Wd1(support)
-Wdpredictions[[4]] <- Wd2(support)
-Wdpredictions[[5]] <- Wd3(support)
-Wdpredictions[[6]] <- Wd4(support)
-colnames(Wdpredictions) <- c("day","World_population","timeline","last1Week","last2Weeks","last3Weeks")
-Wdpredictions <- Wdpredictions %>% pivot_longer(cols = c("World_population","timeline","last1Week","last2Weeks","last3Weeks"),names_to = "model")
-
 ####################plots of models#################################
 
 USpredictions %>% ggplot(mapping = aes(x = day,color = model)) +
@@ -91,12 +71,8 @@ Wpredictions %>% ggplot(mapping = aes(x = day,color = model)) +
        title = "3 model predictions for when #Confirmed = World population")
  
 
-Wdpredictions %>% ggplot(mapping = aes(x = day, color = model)) +
-  geom_line(aes(y = value)) + 
-  labs(x = "Days since January 22nd", y = "Log of World population",
-      title = "3 model predictions for when #Deaths = World population")
 
-exp(f2(nrow(inUS)+1)) - exp(f2(nrow(inUS)))
-exp(f3(nrow(inUS)+1)) - exp(f3(nrow(inUS)))
+exp(f2(nrow(c$US)+1)) - exp(f2(nrow(c$US)))
+exp(f3(nrow(c$US)+1)) - exp(f3(nrow(c$US)))
 
 

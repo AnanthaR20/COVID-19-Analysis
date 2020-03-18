@@ -23,14 +23,14 @@ p + geom_line(mapping = aes(y = log(value)),size = 0.8) +
        title = "Log Increase in Infection, Recovery, and Mortatilty Rate Outside China")
 
 # In China
-over1000$China %>% tp %>% ggplot(mapping = aes(x = day, color = `Rate Type`)) +
+c$China %>% tp %>% ggplot(mapping = aes(x = day, color = `Rate Type`)) +
   geom_line(mapping = aes(y = value),size = 1) +
   labs(x = "Days since January 22nd 2020",
        y = "Number of people",
        title = "Increase in Infection, Recovery, and Mortatilty Rate in China")
 
 # In US
-p <- over1000$US %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
+p <- c$US %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
 
 p + geom_line(mapping = aes(y = value),size = 1) +
   labs(x = "Days since January 22nd 2020",

@@ -44,7 +44,7 @@ c$China %>% tp %>% ggplot(mapping = aes(x = day,y = value)) +
        title = "Increase in Infection, Recovery, and Mortatilty Rate in China")
 
 #not in China
-p <- c$China %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
+p <- notChina %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
 
 p + geom_line(mapping = aes(y = value),size = 1) + 
   labs(x = "Days since January 22nd 2020",
