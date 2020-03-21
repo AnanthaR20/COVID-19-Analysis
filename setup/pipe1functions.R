@@ -16,9 +16,13 @@ t <- function(days = 0){
 # returns df with an incidence column
 addIncidence <- function(df){
   for(i in 1:nrow(df)){
-    if(i == 1){df$incidence[i] <- df$confirms[i]}
+    if(i == 1){
+      df$incidence[i] <- df$confirms[i]
+      df$rate[i] <- 1
+    }
     else {
       df$incidence[i] <- df$confirms[i]-df$confirms[i-1]
+      df$rate[i] <- df$confirms[i]/df$confirms[i-1]
     }
   }
   return(df)
@@ -28,7 +32,7 @@ addIncidence <- function(df){
 # Takes data frames made by *Tracking Function* and
 # puts them into a plottable format for ggplot
 tp <- function(df){
-  return(df %>% pivot_longer(cols = c("confirms","deaths","recovers","active","incidence"),names_to = "Rate Type"))
+  return(df %>% pivot_longer(cols = colnames(df)[-1],names_to = "Rate Type"))
 }
 
 

@@ -1,86 +1,36 @@
 ---
-title: "COVID-19 Infection,Recovery, and Mortality Rates"
+title: "COVID-19 Situation"
 output: github_document
 fig_width: 15
 fig_height: 8
 ---
 
 ```{r include=FALSE}
-source("setup/library.R")
-source("setup/pipe1.R")
-source("dataTables.R")
-```
-
-```{r include=FALSE}
-# USmodel1 <- lm(log(confirms) ~ day , data = inUS)
-# USmodel2 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-7):(nrow(inUS)))) )
-# USmodel3 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-14):(nrow(inUS)))))
-# USmodel4 <- lm(log(confirms) ~ day, data = (inUS %>% slice((nrow(inUS)-21):(nrow(inUS)))))
-# 
-# f1 <- function(x){return(USmodel1$coefficients[1] + USmodel1$coefficients[2]*x)}
-# f2 <- function(x){return(USmodel2$coefficients[1] + USmodel2$coefficients[2]*x)}
-# f3 <- function(x){return(USmodel3$coefficients[1] + USmodel3$coefficients[2]*x)}
-# f4 <- function(x){return(USmodel4$coefficients[1] + USmodel4$coefficients[2]*x)}
+source("Descriptive Plots/MainPlots.R")
 ```
 
 *Plots:*
 ```{r echo=FALSE,fig.height= 8,fig.width=16}
 
 t(0) %>% ggplot(mapping = aes(x = Longitude, y = Latitude)) +
-  geom_point(mapping = aes(size = Confirmed),alpha = 1.5,color = "red") + labs(title = "Spatial Map of Number of Cases Depicted as Point Size")
+  geom_point(mapping = aes(size = log(Confirmed)),alpha = 1.5,color = "red") + labs(title = "Spatial Map of Number of Cases Depicted as Point Size")
 
-#Worldwide
-earth %>% tp %>% ggplot(mapping = aes(x = day,y = value)) + 
-  geom_line(mapping = aes(color = `Rate Type`),size = 1) + 
-  labs(x = "Days since January 22nd 2020",
-       y = "Number of people worldwide",
-       title = "Increase in Infection, Recovery, and Mortatilty Rate Worldwide")
+inUS
 
-# China
-c$China %>% tp %>% ggplot(mapping = aes(x = day,y = value)) + 
-  geom_line(mapping = aes(color = `Rate Type`),size = 1) + 
-  labs(x = "Days since January 22nd 2020",
-       y = "Number of people",
-       title = "Increase in Infection, Recovery, and Mortatilty Rate in China")
+comparison
 
-#not in China
-p <- notChina %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
+inWI
 
-p + geom_line(mapping = aes(y = value),size = 1) + 
-  labs(x = "Days since January 22nd 2020",
-       y = "Number of people worldwide",
-       title = "Increase in Infection, Recovery, and Mortatilty Rate Outside China")
+onEarth
 
-p + geom_line(mapping = aes(y = log(value)),size = 0.8) +
-  labs(x = "Days since January 22nd 2020",
-       y = "Log Number of people worldwide",
-       title = "Log Increase in Infection, Recovery, and Mortatilty Rate Outside China")
+notInChina
 
-#In US
-p <- c$US %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`))
+inChina
 
-p + geom_line(mapping = aes(y = value),size = 1) +
-  labs(x = "Days since January 22nd 2020",
-       y = "Number of people in US",
-       title = "Increase in Infection, Recovery, and Mortatilty Rate in US")
+inItaly
 
-p + geom_line(mapping = aes(y = log(value)),size = 1) +
-  labs(x = "Days since January 22nd 2020",
-       y = "Log Number of people in US",
-       title = "Log Increase in Infection, Recovery, and Mortatilty Rate in US")
+inIran
 
-#In Italy
-c$Italy %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
-  geom_line(mapping = aes(y = value),size = 1) +
-  labs(x = "Days since January 22nd 2020",
-       y = "Number of people in Italy",
-       title = "Increase in Infection, Recovery, and Mortatilty Rate in Italy")
-
-c$Italy %>% tp %>% ggplot(mapping = aes(x = day,color = `Rate Type`)) +
-  geom_line(mapping = aes(y = log(value)),size = 1) +
-  labs(x = "Days since January 22nd 2020",
-       y = " Log Number of people in Italy",
-       title = "Log Increase in Infection, Recovery, and Mortatilty Rate in Italy")
 ```
 ____
 *US Rates:*

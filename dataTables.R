@@ -16,12 +16,19 @@ over1000 <- (t(0) %>% group_by(`Country/Region`) %>%
 
 allCountries <- unique((t(0) %>% group_by(`Country/Region`))[["Country/Region"]])
 
+USStates <- unique((t(0) %>% filter(`Country/Region` == "US") %>% group_by(`Province/State`))[["Province/State"]])
+
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 
 c <- list()
 for(country in allCountries){
   c[[country]] <- track(country)
 }
+s <- list()
+for(state in USStates){
+  s[[state]] <- track(state)
+}
+
 # Not China 
 notChina <- earth - track("China")
 notChina$day <- 1:nrow(notChina)

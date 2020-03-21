@@ -1,8 +1,13 @@
-COVID-19 Infection,Recovery, and Mortality Rates
+COVID-19 Situation
 ================
 
 *Plots:*
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-3-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-3-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-3-5.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-3-6.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-3-7.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-3-8.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-3-9.png)<!-- -->
+
+    ## Warning in sqrt(x): NaNs produced
+
+    ## Warning: Removed 13 rows containing missing values (geom_point).
+
+![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-4.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-5.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-6.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-7.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-8.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-9.png)<!-- -->
 \_\_\_\_ *US Rates:*
 
 *If it is increasing by 0% then this means there were no new cases in

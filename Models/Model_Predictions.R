@@ -1,6 +1,6 @@
-source("setup/library.R")
-source("setup/pipe1.R")
-
+if(!exists('h')){
+  source("dataTables.R")
+}
 #Making Models
 support <- 0:365
 us <- 330415717
@@ -60,10 +60,10 @@ USpredictions %>% ggplot(mapping = aes(x = day,color = model)) +
   geom_line(mapping = aes(y = value)) + labs(x = "Days since January 22nd", y = "Log of US population",
        title = "3 model predictions for when #Confirmed = US population")
 
-print(str_c("Given all data there are " ,(log(us)-USmodel1$coefficients[1]) / (USmodel1$coefficients[2])," days from 1-22 until #Confirmed = US population" ))
-print(str_c("Given data from the last 3 weeks there are " ,(log(us)-USmodel4$coefficients[1]) / (USmodel4$coefficients[2])," days from 1-22 until #Confirmed = US population" ))
-print(str_c("Given data from the last 2 weeks there are " ,(log(us)-USmodel3$coefficients[1]) / (USmodel3$coefficients[2])," days from 1-22 until #Confirmed = US population" ))
-print(str_c("Given data from the last week there are " ,(log(us)-USmodel2$coefficients[1]) / (USmodel2$coefficients[2])," days from 1-22 until #Confirmed = US population" ))
+print(str_c("Given all data there are " ,((log(us)-USmodel1$coefficients[1]) / (USmodel1$coefficients[2]))-nrow(earth)," days until #Confirmed = US population" ))
+print(str_c("Given data from the last 3 weeks there are " ,((log(us)-USmodel4$coefficients[1]) / (USmodel4$coefficients[2]))-nrow(earth)," days until #Confirmed = US population" ))
+print(str_c("Given data from the last 2 weeks there are " ,((log(us)-USmodel3$coefficients[1]) / (USmodel3$coefficients[2]))-nrow(earth)," days until #Confirmed = US population" ))
+print(str_c("Given data from the last week there are " ,((log(us)-USmodel2$coefficients[1]) / (USmodel2$coefficients[2]))-nrow(earth)," days until #Confirmed = US population" ))
 
 
 Wpredictions %>% ggplot(mapping = aes(x = day,color = model)) + 
