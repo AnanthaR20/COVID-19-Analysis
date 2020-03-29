@@ -1,7 +1,7 @@
 # Summary Tables #
 source("setup/library.R")
 source("setup/pipe1.R")
-
+print("Running dataTables.R")
 #--Summary Tables--#
 # On Earth
 earth <- track()

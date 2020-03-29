@@ -1,4 +1,4 @@
-if(!exists('h')){
+if(!exists('world')){
   source("dataTables.R")
 }
 #Making Models
@@ -70,9 +70,5 @@ Wpredictions %>% ggplot(mapping = aes(x = day,color = model)) +
   geom_line(mapping = aes(y = value)) + labs(x = "Days since January 22nd", y = "Log of World population",
        title = "3 model predictions for when #Confirmed = World population")
  
-
-
-exp(f2(nrow(c$US)+1)) - exp(f2(nrow(c$US)))
-exp(f3(nrow(c$US)+1)) - exp(f3(nrow(c$US)))
 
 

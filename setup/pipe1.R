@@ -3,63 +3,63 @@
 # :::::::::::::::::::::::::::::::::::::::::::::: #
 # This script creates a 'heat' list of the full available
 #   timeline of the epidemic. It is the list that shows the
-#   time 'under heat' so it is named 'h' and contains all the data
+#   time 'under heat' so it is named 'world' and contains all the data
 # At the end of this script there are a couple of function associated
 #   with the way the data is structured to get useful info from it.
 source("setup/library.R")
 
-h <- list()
-todayInMarch <- as.numeric(substring(date(),9,10))
+world <- list()
+
+# Create
+yrstart <- as.Date("2020-01-01")
+dataperiod1 <- yday("2020-01-22"):yday(now())
+dataperiod1 <- yrstart + (dataperiod1-1)
+dataperiod1 <- format(dataperiod1,'%m-%d-%Y')
+
 count <- 1
-
-# January
-day <- 22:31
-for(d in day){
-  url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/01-",d,"-2020.csv")
-  print(url)
-  h[[count]] <- fread(url)
-  count <- count+1
+#Bring in all the data up until Today
+for(d in dataperiod1){
+  url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/",d,".csv")
+  if( is.na(readUrl(url)) || is.null(readUrl(url)) ){
+    
+  } else {
+    print(url)
+    world[[count]] <- fread(url)
+    count <- count + 1
+  }
 }
-# February
-day <- c(str_c("0",1:9),10:29)
-for(d in day){
-  url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/02-",d,"-2020.csv")
-  print(url)
-  h[[count]] <- fread(url)
-  count <- count+1
+# Make Country+Region, Province+State, Last_Update, Latitude and Longitude colnames consistent
+for(i in 1:length(world)){
+  if("Province_State" %in% colnames(world[[i]])){
+    colnames(world[[i]])[colnames(world[[i]]) == "Province_State"] <- "Province/State"
+  }
+  if("Country_Region" %in% colnames(world[[i]])){
+    colnames(world[[i]])[colnames(world[[i]]) == "Country_Region"] <- "Country/Region"
+  }
+  if("Last Update" %in% colnames(world[[i]])){
+    colnames(world[[i]])[colnames(world[[i]]) == "Last Update"] <- "Last_Update"
+  }
+  if("Lat" %in% colnames(world[[i]])){
+    colnames(world[[i]])[colnames(world[[i]]) == "Lat"] <- "Latitude"
+  }
+  if("Long_" %in% colnames(world[[i]])){
+    colnames(world[[i]])[colnames(world[[i]]) == "Long_"] <- "Longitude"
+  }
 }
-# March
-day <- c(str_c("0",1:9),10:(todayInMarch))
-for(d in day){
-  url <- str_c("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-",d,"-2020.csv")
-  print(url)
-  h[[count]] <- fread(url)
-  count <- count+1
-}
-
 # Handle inconsistent naming convention for South Korea
-for(i in 1:length(h)){
- h[[i]]$`Country/Region` <- ifelse((h[[i]]$`Country/Region` == "Korea, South" | h[[i]]$`Country/Region` == "Republic of Korea"),"South Korea",h[[i]]$`Country/Region`)
+for(i in 1:length(world)){
+    world[[i]]$`Country/Region` <- ifelse((world[[i]]$`Country/Region` == "Korea, South" | world[[i]]$`Country/Region` == "Republic of Korea"),"South Korea",world[[i]]$`Country/Region`)
 }
 
-# Add longitude and latitude to the whole data set
-lon_lat_key <- h[[length(h)]] %>% select(`Country/Region`,`Province/State`,Longitude,Latitude)
+# # Add longitude and latitude to the whole data set
+# lon_lat_key <- world[[length(world)]] %>% select(`Country/Region`,`Province/State`,Longitude,Latitude)
+# 
+# for(i in 1:length(world)){
+#   if(is.null(world[[i]][["Longitude"]])){
+#     world[[i]] <- world[[i]] %>% left_join(lon_lat_key,by = c("Country/Region","Province/State"))
+#   }
+# }
 
-for(i in 1:length(h)){
-  if(is.null(h[[i]][["Longitude"]])){
-    h[[i]] <- h[[i]] %>% left_join(lon_lat_key,by = c("Country/Region","Province/State"))
-  }
-}
-
-ULT <- data.frame()
-
-for(i in 1:length(h)){
-  if(is_empty(ULT)){
-    ULT <- h[[i]]
-  } else{
-    ULT <- ULT %>% rbind(h[[i]],fill = T)
-  }
-}
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
 # -- Functions for the 'heat' 'h' list -- #
 

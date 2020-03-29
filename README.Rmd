@@ -5,19 +5,24 @@ fig_width: 15
 fig_height: 8
 ---
 
-```{r include=FALSE}
+*Plots:*
+```{r echo=FALSE,warning=FALSE,include=FALSE}
+source("setup/pipe1.R")
 source("Descriptive Plots/MainPlots.R")
 ```
 
-*Plots:*
-```{r echo=FALSE,fig.height= 8,fig.width=16}
+
+```{r echo=FALSE,fig.width= 10, fig.height=5,warning=FALSE}
 
 t(0) %>% ggplot(mapping = aes(x = Longitude, y = Latitude)) +
-  geom_point(mapping = aes(size = log(Confirmed)),alpha = 1.5,color = "red") + labs(title = "Spatial Map of Number of Cases Depicted as Point Size")
+  geom_point(mapping = aes(size = Confirmed),alpha = 1.5,color = "red") +
+  labs(title = "Spatial Map of Number of Cases Depicted as Point Size")
 
 inUS
 
 comparison
+
+comparison2
 
 inWI
 
