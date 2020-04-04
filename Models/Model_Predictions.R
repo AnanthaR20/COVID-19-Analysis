@@ -27,7 +27,8 @@ USpredictions[[3]] <- f1(support)
 USpredictions[[4]] <- f2(support)
 USpredictions[[5]] <- f3(support)
 USpredictions[[6]] <- f4(support)
-colnames(USpredictions) <- c("day","US_population","timeline","last1Week","last2Weeks","last3Weeks")
+USpredictions[[7]] <- as.Date("2020-01-22") + (support)
+colnames(USpredictions) <- c("day","US_population","timeline","last1Week","last2Weeks","last3Weeks",'date')
 USpredictions <- USpredictions %>% pivot_longer(cols = c("US_population","timeline","last1Week","last2Weeks","last3Weeks"),names_to = "model")
 
 
@@ -56,7 +57,7 @@ Wpredictions <- Wpredictions %>% pivot_longer(cols = c("World_population","timel
 ############################################################################################
 ####################plots of models#################################
 
-USpredictions %>% ggplot(mapping = aes(x = day,color = model)) +
+USpredictions %>% ggplot(mapping = aes(x = date,color = model)) +
   geom_line(mapping = aes(y = value)) + labs(x = "Days since January 22nd", y = "Log of US population",
        title = "3 model predictions for when #Confirmed = US population")
 

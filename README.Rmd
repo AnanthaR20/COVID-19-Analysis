@@ -20,6 +20,8 @@ t(0) %>% ggplot(mapping = aes(x = Longitude, y = Latitude)) +
 
 inUS
 
+theCurve
+
 comparison
 
 comparison2

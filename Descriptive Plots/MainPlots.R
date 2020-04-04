@@ -89,8 +89,8 @@ for(i in choice){
 
 comparison <- thousandPlus %>% filter(`Rate Type` == 'confirms') %>% 
   pivot_longer(cols = c(-1,-2,-3),names_to = "country") %>%
-  ggplot(mapping = aes(x = date, color = country)) +
-    geom_line(mapping = aes(y = value),size = 1) +
+  ggplot(mapping = aes(x = date, y = value)) +
+    geom_line(mapping = aes(color = country),size = 1) +
     labs(x = "Days since Januray 22nd",
          y = "# of Confirmed Cases",
          title = "Several Countries Confirmed Rates Side-by-Side")
@@ -104,6 +104,27 @@ comparison2 <- thousandPlus %>% filter(`Rate Type` == 'confirms' | `Rate Type` =
     geom_line(mapping = aes(color = country)) +
     labs(x = "Total Confirmed Cases", y = "Daily New Cases",
          title = "Infection Incidence as a Function of Confirmed Cases")
+
+
+
+# A look at the 'curve'
+us <- 330415717 * 0.01
+
+c$US %>% mutate(Infected = active/us,
+                Removed = (deaths + recovers)/us,
+                Susceptible = (us-confirms)/us) %>% 
+  tp %>% filter(`Rate Type` == "Infected" | `Rate Type` == "Susceptible" |
+                `Rate Type` == "Removed" ) -> curve
+
+theCurve <- curve %>% 
+  ggplot(aes(x = date, y = value)) +
+  geom_area(aes(fill = `Rate Type`)) +
+  labs(y = "% Max Capacity of US Health System",
+       title = "'The Curve' with arbitrary assumption that capacity = 1% US pop.")
+
+
+
+
 
 
 
